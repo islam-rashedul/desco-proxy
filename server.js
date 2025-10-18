@@ -18,7 +18,7 @@ if (!DESCO_BASE || !API_KEY) {
 
 const REQUEST_TIMEOUT_MS = 10000;
 
-// ⚠️ Disable SSL verification (use only for development or if you're sure it's safe)
+// ⚠️ Disable SSL verification (use only if safe)
 const httpsAgent = new https.Agent({
     rejectUnauthorized: false
 });
@@ -77,5 +77,11 @@ app.get('/health', (req, res) => {
     res.json({ status: 'ok' });
 });
 
+// Keep-alive endpoint to keep Render free-tier awake
+app.get('/keepAlive', requireApiKey, (req, res) => {
+    res.json({ status: 'ok' });
+});
+
+// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Proxy running on port ${PORT}`));
