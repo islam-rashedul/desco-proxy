@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const helmet = require('helmet');
+const https = require('https');
 
 const app = express();
 app.use(helmet());
@@ -16,6 +17,11 @@ if (!DESCO_BASE || !API_KEY) {
 }
 
 const REQUEST_TIMEOUT_MS = 10000;
+
+// ⚠️ Disable SSL verification (use only for development or if you're sure it's safe)
+const httpsAgent = new https.Agent({
+    rejectUnauthorized: false
+});
 
 // Middleware: check API key
 function requireApiKey(req, res, next) {
@@ -33,7 +39,10 @@ app.get('/getBalance', requireApiKey, async (req, res) => {
         if (!accountNo) return res.status(400).json({ error: 'Missing accountNo parameter' });
 
         const url = `${DESCO_BASE}/customer/getBalance?accountNo=${encodeURIComponent(accountNo)}`;
-        const response = await axios.get(url, { timeout: REQUEST_TIMEOUT_MS });
+        const response = await axios.get(url, {
+            timeout: REQUEST_TIMEOUT_MS,
+            httpsAgent
+        });
 
         res.status(response.status).json(response.data);
     } catch (err) {
@@ -50,7 +59,10 @@ app.post('/getBalance', requireApiKey, async (req, res) => {
         if (!accountNo) return res.status(400).json({ error: 'Missing accountNo in JSON body' });
 
         const url = `${DESCO_BASE}/customer/getBalance?accountNo=${encodeURIComponent(accountNo)}`;
-        const response = await axios.get(url, { timeout: REQUEST_TIMEOUT_MS });
+        const response = await axios.get(url, {
+            timeout: REQUEST_TIMEOUT_MS,
+            httpsAgent
+        });
 
         res.status(response.status).json(response.data);
     } catch (err) {
