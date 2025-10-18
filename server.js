@@ -7,7 +7,7 @@ app.use(helmet());
 app.use(express.json()); // for POST JSON bodies
 
 // Config via environment variables
-const DESCO_BASE = process.env.DESCO_BASE || 'https://prepaid.desco.org.bd/api/tkdes';
+const DESCO_BASE = 'https://prepaid.desco.org.bd/api/tkdes';
 const API_KEY = process.env.API_KEY || 'please-set-a-secure-key'; // must set on Render
 const REQUEST_TIMEOUT_MS = 10000;
 
