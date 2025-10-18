@@ -1,0 +1,15 @@
+# Node modules (dependencies, not needed in repo)
+node_modules/
+
+# Local environment variables
+.env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
